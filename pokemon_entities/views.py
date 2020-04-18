@@ -23,7 +23,7 @@ def show_all_pokemons(request):
     pokemons = Pokemon.objects.all()
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon in pokemons:
-        for pokemon_entity in PokemonEntity.objects.filter(title=pokemon):
+        for pokemon_entity in PokemonEntity.objects.filter(choose_pokemon=pokemon):
             add_pokemon(
                 folium_map, pokemon_entity.lat, pokemon_entity.lon,
                 pokemon.title_en,
@@ -46,7 +46,7 @@ def show_pokemon(request, pokemon_id):
     pokemons = Pokemon.objects.all()
     for pokemon in pokemons:
         if pokemon.id == int(pokemon_id):
-            requested_pokemon = PokemonEntity.objects.filter(title=pokemon)
+            requested_pokemon = PokemonEntity.objects.get(choose_pokemon=pokemon)
 
             try:
                 next_evolution = Pokemon.objects.get(previous_evolution=pokemon)
