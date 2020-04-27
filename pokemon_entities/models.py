@@ -3,9 +3,9 @@ from django.db.models import DateTimeField, IntegerField
 
 
 class Pokemon(models.Model):
-    title = models.CharField(max_length=200,  verbose_name='Имя на русском')
-    title_en = models.CharField(max_length=200,  blank=True, verbose_name='Имя на английском')
-    title_jp = models.CharField(max_length=200,  blank=True, verbose_name='Имя на японском')
+    title = models.CharField(max_length=200, verbose_name='Имя на русском')
+    title_en = models.CharField(max_length=200, blank=True, verbose_name='Имя на английском')
+    title_jp = models.CharField(max_length=200, blank=True, verbose_name='Имя на японском')
     photo = models.ImageField(upload_to='images', null=True, verbose_name='Загрузить фото')
     description = models.TextField(default='', blank=True, verbose_name='Описание')
     previous_evolution = models.ForeignKey('self',

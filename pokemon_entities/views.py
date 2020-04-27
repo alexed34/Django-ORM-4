@@ -88,4 +88,3 @@ def show_pokemons(request, pokemon_id):
                                                     'pokemon': pokemon,
                                                     'next_evolutions': next_evolutions,
                                                     })
-
