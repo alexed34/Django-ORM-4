@@ -5,7 +5,7 @@ from pokemon_entities.models import Pokemon, PokemonEntity
 from django.shortcuts import get_object_or_404
 
 MOSCOW_CENTER = [55.751244, 37.618423]
-DEFAULT_IMAGE_URL = "https://vignette.wikia.nocookie.net/pokemon/images/6/6e/%21.png/revision/latest/fixed-aspect-ratio-down/width/240/height/240?cb=20130525215832&fill=transparent"
+DEFAULT_IMAGE_URL = "media/images/21.png"
 
 
 def add_pokemon(folium_map, lat, lon, name, image_url=DEFAULT_IMAGE_URL):
@@ -22,7 +22,7 @@ def add_pokemon(folium_map, lat, lon, name, image_url=DEFAULT_IMAGE_URL):
 
 def show_all_pokemons(request):
     pokemons = Pokemon.objects.all()
-    folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
+    folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=10)
     for pokemon in pokemons:
         for pokemon_entity in pokemon.pokemon_entities.all():
             add_pokemon(
