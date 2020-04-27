@@ -24,7 +24,11 @@ def show_all_pokemons(request):
     pokemons = Pokemon.objects.all()
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon in pokemons:
+<<<<<<< HEAD
         for pokemon_entity in pokemon.pokemon_entities.all():
+=======
+        for pokemon_entity in PokemonEntity.objects.filter(choose_pokemon=pokemon):
+>>>>>>> parent of 98b276e... 32 шаг
             add_pokemon(
                 folium_map, pokemon_entity.lat, pokemon_entity.lon,
                 pokemon.title_en,
@@ -44,9 +48,24 @@ def show_all_pokemons(request):
 
 
 def show_pokemons(request, pokemon_id):
+<<<<<<< HEAD
     pokemon = get_object_or_404(Pokemon, id=pokemon_id)
     requested_pokemons = pokemon.pokemon_entities.all()
     next_evolutions = pokemon.next_evolutions.all()
+=======
+    pokemons = Pokemon.objects.all()
+    for pokemon in pokemons:
+        if pokemon.id == int(pokemon_id):
+            requested_pokemons = PokemonEntity.objects.filter(choose_pokemon=pokemon)
+
+            try:
+                next_evolution = Pokemon.objects.get(previous_evolution=pokemon)
+            except:
+                next_evolution = None
+            break
+    else:
+        return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
+>>>>>>> parent of 98b276e... 32 шаг
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
 
@@ -59,7 +78,7 @@ def show_pokemons(request, pokemon_id):
             pokemon.photo.path,
         )
 
-    pokemons_data = []
+    pokemons_data_json = []
     pokemon_data = {"pokemon_id": pokemon.id,
                     "title_ru": pokemon.title,
                     "title_en": pokemon.title_en,
@@ -73,19 +92,15 @@ def show_pokemons(request, pokemon_id):
                                    "img_url": pokemon.previous_evolution.photo.path}
         pokemon_data['previous_evolution'] = previous_evolution_dict
 
-    if next_evolutions:
-        next_evolutions_list = []
-        pokemon_data['next_evolutions'] = next_evolutions_list
-        for next_evolution in next_evolutions:
-            next_evolution_dict = {"title_ru": next_evolution.title,
-                                   "pokemon_id": next_evolution.id,
-                                   "img_url": next_evolution.photo.path}
-            next_evolutions_list.append(next_evolution_dict)
+    if next_evolution:
+        next_evolution_dict = {"title_ru": next_evolution.title,
+                               "pokemon_id": next_evolution.id,
+                               "img_url": next_evolution.photo.path}
+        pokemon_data['next_evolution'] = next_evolution_dict
 
-    pokemons_data.append(pokemon_data)
+    pokemons_data_json.append(pokemon_data)
 
     return render(request, "pokemon.html", context={'map': folium_map._repr_html_(),
                                                     'pokemon': pokemon,
-                                                    'next_evolutions': next_evolutions,
+                                                    'next_evolution': next_evolution,
                                                     })
-
