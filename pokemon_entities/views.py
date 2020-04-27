@@ -2,6 +2,7 @@ import folium
 from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from pokemon_entities.models import Pokemon, PokemonEntity
+from django.shortcuts import get_object_or_404
 
 MOSCOW_CENTER = [55.751244, 37.618423]
 DEFAULT_IMAGE_URL = "https://vignette.wikia.nocookie.net/pokemon/images/6/6e/%21.png/revision/latest/fixed-aspect-ratio-down/width/240/height/240?cb=20130525215832&fill=transparent"
@@ -23,7 +24,7 @@ def show_all_pokemons(request):
     pokemons = Pokemon.objects.all()
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon in pokemons:
-        for pokemon_entity in PokemonEntity.objects.filter(pokemon_model=pokemon):
+        for pokemon_entity in pokemon.pokemon_entities.all():
             add_pokemon(
                 folium_map, pokemon_entity.lat, pokemon_entity.lon,
                 pokemon.title_en,
@@ -43,18 +44,9 @@ def show_all_pokemons(request):
 
 
 def show_pokemons(request, pokemon_id):
-    pokemons = Pokemon.objects.all()
-    for pokemon in pokemons:
-        if pokemon.id == int(pokemon_id):
-            requested_pokemons = PokemonEntity.objects.filter(pokemon_model=pokemon)
-
-            try:
-                next_evolutions = pokemon.next_evolutions.all()
-            except:
-                next_evolutions = None
-            break
-    else:
-        return HttpResponseNotFound('<h1>Такой покемон не найден</h1>')
+    pokemon = get_object_or_404(Pokemon, id=pokemon_id)
+    requested_pokemons = pokemon.pokemon_entities.all()
+    next_evolutions = pokemon.next_evolutions.all()
 
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
 
