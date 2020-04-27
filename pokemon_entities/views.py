@@ -25,7 +25,11 @@ def show_all_pokemons(request):
     folium_map = folium.Map(location=MOSCOW_CENTER, zoom_start=12)
     for pokemon in pokemons:
 <<<<<<< HEAD
+<<<<<<< HEAD
         for pokemon_entity in pokemon.pokemon_entities.all():
+=======
+        for pokemon_entity in PokemonEntity.objects.filter(choose_pokemon=pokemon):
+>>>>>>> parent of 98b276e... 32 шаг
 =======
         for pokemon_entity in PokemonEntity.objects.filter(choose_pokemon=pokemon):
 >>>>>>> parent of 98b276e... 32 шаг

@@ -21,7 +21,11 @@ class Pokemon(models.Model):
 
 class PokemonEntity(models.Model):
 <<<<<<< HEAD
+<<<<<<< HEAD
     pokemon_model = models.ForeignKey(Pokemon, on_delete=models.CASCADE, related_name='pokemon_entities', verbose_name='Выбрать покемона')
+=======
+    choose_pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE, related_name='pokemon_entitys', verbose_name='Выбрать покемона')
+>>>>>>> parent of 98b276e... 32 шаг
 =======
     choose_pokemon = models.ForeignKey(Pokemon, on_delete=models.CASCADE, related_name='pokemon_entitys', verbose_name='Выбрать покемона')
 >>>>>>> parent of 98b276e... 32 шаг
